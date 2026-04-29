@@ -7,6 +7,7 @@ export default function VibeTwistPro() {
   const [song, setSong] = useState("EDM");
   const [photo, setPhoto] = useState(null);
   const audioRef = useRef(null);
+const [isPlaying, setIsPlaying] = useState(false);
 
   function upload(e) {
     const file = e.target.files?.[0];
@@ -17,9 +18,18 @@ export default function VibeTwistPro() {
     reader.readAsDataURL(file);
   }
 
-  function playMusic() {
-    audioRef.current?.play();
+function playMusic() {
+  if (!audioRef.current) return;
+
+  if (isPlaying) {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    setIsPlaying(false);
+  } else {
+    audioRef.current.play();
+    setIsPlaying(true);
   }
+}
 
   const aliens = {
     green: "👽",
@@ -66,10 +76,18 @@ export default function VibeTwistPro() {
             <option>Disco Beat</option>
           </select>
 
-          <button onClick={playMusic}>Play Music Preview</button>
+          <button onClick={playMusic}>
+  {isPlaying ? "Stop Music" : "Play Music Preview"}
+</button>
         </div>
       </section>
 
+  <audio
+  ref={audioRef}
+  src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+  onEnded={() => setIsPlaying(false)}
+/>
+    
       <section className="preview-card">
         <h2>Live Preview</h2>
 
