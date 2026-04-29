@@ -8,6 +8,10 @@ export default function VibeTwistPro() {
   const [photo, setPhoto] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.6);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [resultMode, setResultMode] = useState(null);
+  const [funLevel, setFunLevel] = useState("Funny");
+  const [scene, setScene] = useState("Space Disco");
 
   const audioRef = useRef(null);
 
@@ -68,6 +72,16 @@ export default function VibeTwistPro() {
     }
   }
 
+  function generateDance() {
+    setResultMode(null);
+    setIsGenerating(true);
+
+    setTimeout(() => {
+      setIsGenerating(false);
+      setResultMode("done");
+    }, 2500);
+  }
+
   return (
     <main className="app">
       <section className="hero">
@@ -106,6 +120,18 @@ export default function VibeTwistPro() {
             <option>Disco Beat</option>
           </select>
 
+          <select value={funLevel} onChange={(e) => setFunLevel(e.target.value)}>
+            <option>Subtle</option>
+            <option>Funny</option>
+            <option>Absurd</option>
+          </select>
+
+          <select value={scene} onChange={(e) => setScene(e.target.value)}>
+            <option>Space Disco</option>
+            <option>Alien Nightclub</option>
+            <option>Moon Party</option>
+          </select>
+
           <button onClick={playMusic}>
             {isPlaying ? "Stop Music" : "Play Music Preview"}
           </button>
@@ -137,10 +163,23 @@ export default function VibeTwistPro() {
 
         <motion.div
           className="alien-stage"
-          animate={{ rotate: [0, 3, -3, 0], y: [0, -8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.2 }}
+          animate={{
+            rotate: isPlaying ? [0, 5, -5, 0] : [0, 3, -3, 0],
+            y: isPlaying ? [0, -12, 0] : [0, -8, 0],
+            scale: isPlaying ? [1, 1.05, 1] : [1, 1.02, 1]
+          }}
+          transition={{ repeat: Infinity, duration: isPlaying ? 1 : 1.4 }}
         >
-          <div className="disco">🪩</div>
+          <div
+            className="disco"
+            style={{
+              animation: isPlaying
+                ? "spin 1s linear infinite"
+                : "spin 6s linear infinite"
+            }}
+          >
+            🪩
+          </div>
 
           <div className="alien-body">
             <div className="alien-head">
@@ -158,10 +197,45 @@ export default function VibeTwistPro() {
 
         <p className="caption">
           {aliens[avatar]} performing <strong>{dance}</strong> to{" "}
-          <strong>{song}</strong>
+          <strong>{song}</strong> in <strong>{scene}</strong> (
+          <strong>{funLevel}</strong> mode)
         </p>
 
-        <button className="generate">Generate Dancing GIF</button>
+        <button className="generate" onClick={generateDance}>
+          {isGenerating ? "Generating..." : "Generate Dancing GIF"}
+        </button>
+
+        {isGenerating && (
+          <div className="ai-thinking">
+            🧠 Scanning face... syncing beat... choosing dance moves...
+          </div>
+        )}
+
+        {resultMode === "done" && (
+          <div className="results">
+            <h3>✨ Your Alien Performances</h3>
+
+            <div className="result-grid">
+              <div>
+                <span>😎</span>
+                <strong>Clean Version</strong>
+                <p>Polished alien performance.</p>
+              </div>
+
+              <div>
+                <span>😂</span>
+                <strong>Funniest Version</strong>
+                <p>Maximum comedy contrast.</p>
+              </div>
+
+              <div>
+                <span>🤪</span>
+                <strong>Weirdest Version</strong>
+                <p>Absurd alien chaos mode.</p>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="features">
