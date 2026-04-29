@@ -12,6 +12,10 @@ export default function VibeTwistPro() {
   const [resultMode, setResultMode] = useState(null);
   const [funLevel, setFunLevel] = useState("Funny");
   const [scene, setScene] = useState("Space Disco");
+  const [endingGag, setEndingGag] = useState("Disco Ball Crash");
+  const [performanceStyle, setPerformanceStyle] = useState(
+    "I Will Survive Energy"
+  );
 
   const audioRef = useRef(null);
 
@@ -89,7 +93,7 @@ export default function VibeTwistPro() {
         <h1>👽 VibeTwist PRO</h1>
         <p>
           Upload your face, choose an alien avatar, pick a song, select a dance
-          style, and generate a viral alien performance.
+          style, choose a comedy ending, and generate a viral alien performance.
         </p>
       </section>
 
@@ -111,6 +115,8 @@ export default function VibeTwistPro() {
             <option>Shuffle</option>
             <option>Breakdance</option>
             <option>Disco</option>
+            <option>Ballroom</option>
+            <option>Robot Dance</option>
           </select>
 
           <select value={song} onChange={changeSong}>
@@ -130,6 +136,30 @@ export default function VibeTwistPro() {
             <option>Space Disco</option>
             <option>Alien Nightclub</option>
             <option>Moon Party</option>
+            <option>Retro Karaoke Stage</option>
+          </select>
+
+          <select
+            value={performanceStyle}
+            onChange={(e) => setPerformanceStyle(e.target.value)}
+          >
+            <option>I Will Survive Energy</option>
+            <option>Confident Alien Diva</option>
+            <option>Awkward Karaoke Alien</option>
+            <option>Disco Disaster Mode</option>
+            <option>Overdramatic Space Idol</option>
+          </select>
+
+          <select
+            value={endingGag}
+            onChange={(e) => setEndingGag(e.target.value)}
+          >
+            <option>Disco Ball Crash</option>
+            <option>Spotlight Fails</option>
+            <option>Alien Trips</option>
+            <option>Crowd Goes Wild</option>
+            <option>Freeze Frame Pose</option>
+            <option>Microphone Drop</option>
           </select>
 
           <button onClick={playMusic}>
@@ -197,8 +227,9 @@ export default function VibeTwistPro() {
 
         <p className="caption">
           {aliens[avatar]} performing <strong>{dance}</strong> to{" "}
-          <strong>{song}</strong> in <strong>{scene}</strong> (
-          <strong>{funLevel}</strong> mode)
+          <strong>{song}</strong> in <strong>{scene}</strong> with{" "}
+          <strong>{performanceStyle}</strong> and ending:{" "}
+          <strong>{endingGag}</strong>
         </p>
 
         <button className="generate" onClick={generateDance}>
@@ -207,7 +238,8 @@ export default function VibeTwistPro() {
 
         {isGenerating && (
           <div className="ai-thinking">
-            🧠 Scanning face... syncing beat... choosing dance moves...
+            🧠 Scanning face... syncing beat... selecting alien moves... choosing
+            gag ending...
           </div>
         )}
 
@@ -217,21 +249,21 @@ export default function VibeTwistPro() {
 
             <div className="result-grid">
               <div>
-                <span>😎</span>
-                <strong>Clean Version</strong>
-                <p>Polished alien performance.</p>
+                <span>🪩</span>
+                <strong>Classic Disco Crash</strong>
+                <p>{endingGag} ending inspired by old-school alien comedy.</p>
               </div>
 
               <div>
-                <span>😂</span>
-                <strong>Funniest Version</strong>
-                <p>Maximum comedy contrast.</p>
+                <span>🎤</span>
+                <strong>Diva Performance</strong>
+                <p>{performanceStyle} with dramatic dance moves.</p>
               </div>
 
               <div>
                 <span>🤪</span>
-                <strong>Weirdest Version</strong>
-                <p>Absurd alien chaos mode.</p>
+                <strong>Chaos Cut</strong>
+                <p>Absurd remix with {funLevel} comedy level.</p>
               </div>
             </div>
           </div>
