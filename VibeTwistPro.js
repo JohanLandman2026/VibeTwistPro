@@ -6,8 +6,24 @@ export default function VibeTwistPro() {
   const [dance, setDance] = useState("Hip Hop");
   const [song, setSong] = useState("EDM");
   const [photo, setPhoto] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.6);
+
   const audioRef = useRef(null);
-const [isPlaying, setIsPlaying] = useState(false);
+
+  const aliens = {
+    green: "👽",
+    blue: "🛸",
+    robot: "🤖",
+    gold: "👑"
+  };
+
+  const musicTracks = {
+    EDM: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    Afrobeats: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+    "Funk Groove": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+    "Disco Beat": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+  };
 
   function upload(e) {
     const file = e.target.files?.[0];
@@ -18,25 +34,39 @@ const [isPlaying, setIsPlaying] = useState(false);
     reader.readAsDataURL(file);
   }
 
-function playMusic() {
-  if (!audioRef.current) return;
+  function playMusic() {
+    if (!audioRef.current) return;
 
-  if (isPlaying) {
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-    setIsPlaying(false);
-  } else {
-    audioRef.current.play();
-    setIsPlaying(true);
+    audioRef.current.volume = volume;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
   }
-}
 
-  const aliens = {
-    green: "👽",
-    blue: "🛸",
-    robot: "🤖",
-    gold: "👑"
-  };
+  function changeVolume(e) {
+    const newVolume = Number(e.target.value);
+    setVolume(newVolume);
+
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
+  }
+
+  function changeSong(e) {
+    setSong(e.target.value);
+    setIsPlaying(false);
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  }
 
   return (
     <main className="app">
@@ -69,7 +99,7 @@ function playMusic() {
             <option>Disco</option>
           </select>
 
-          <select value={song} onChange={(e) => setSong(e.target.value)}>
+          <select value={song} onChange={changeSong}>
             <option>EDM</option>
             <option>Afrobeats</option>
             <option>Funk Groove</option>
@@ -77,17 +107,31 @@ function playMusic() {
           </select>
 
           <button onClick={playMusic}>
-  {isPlaying ? "Stop Music" : "Play Music Preview"}
-</button>
+            {isPlaying ? "Stop Music" : "Play Music Preview"}
+          </button>
+
+          <div className="volume-box">
+            <label>Volume</label>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.1"
+              value={volume}
+              onChange={changeVolume}
+            />
+          </div>
+
+          <div className={`waveform ${isPlaying ? "active" : ""}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
       </section>
 
-  <audio
-  ref={audioRef}
-  src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-  onEnded={() => setIsPlaying(false)}
-/>
-    
       <section className="preview-card">
         <h2>Live Preview</h2>
 
@@ -128,7 +172,8 @@ function playMusic() {
 
       <audio
         ref={audioRef}
-        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        src={musicTracks[song]}
+        onEnded={() => setIsPlaying(false)}
       />
     </main>
   );
