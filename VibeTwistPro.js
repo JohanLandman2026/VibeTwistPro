@@ -11,19 +11,29 @@ export default function VibeTwistPro() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [resultMode, setResultMode] = useState(null);
   const [funLevel, setFunLevel] = useState("Funny");
-  const [scene, setScene] = useState("Space Disco");
+  const [scene, setScene] = useState("Haunted House");
   const [endingGag, setEndingGag] = useState("Disco Ball Crash");
-  const [performanceStyle, setPerformanceStyle] = useState(
-    "I Will Survive Energy"
-  );
+  const [performanceStyle, setPerformanceStyle] = useState("I Will Survive Energy");
+  const [mode, setMode] = useState("Solo Mode");
+  const [dancerCount, setDancerCount] = useState(5);
 
   const audioRef = useRef(null);
 
   const aliens = {
-    green: "👽",
-    blue: "🛸",
-    robot: "🤖",
-    gold: "👑"
+    green: { head: "👽", body: "🕺", name: "Green Alien DJ" },
+    blue: { head: "🛸", body: "💃", name: "Blue Space Queen" },
+    robot: { head: "🤖", body: "🕺", name: "Robot Cyborg" },
+    gold: { head: "👑", body: "🕺", name: "Gold VIP Alien" }
+  };
+
+  const avatarKeys = ["green", "blue", "robot", "gold"];
+
+  const sceneData = {
+    "Haunted House": { icon: "🏚️", background: "haunted", doorway: "🚪👻" },
+    "Alpha Tower": { icon: "🗼", background: "tower", doorway: "🚪✨" },
+    Pyramids: { icon: "🏜️", background: "pyramids", doorway: "🚪🔺" },
+    "Funky Doorway": { icon: "🚪", background: "funky", doorway: "🌀🚪🌀" },
+    "Alien Club": { icon: "🪩", background: "club", doorway: "🚪🎧" }
   };
 
   const musicTracks = {
@@ -86,28 +96,61 @@ export default function VibeTwistPro() {
     }, 2500);
   }
 
+  const currentAlien = aliens[avatar];
+  const currentScene = sceneData[scene];
+
+  const groupDancers = Array.from({ length: Number(dancerCount) }, (_, i) => {
+    const key = avatarKeys[i % avatarKeys.length];
+    return aliens[key];
+  });
+
   return (
     <main className="app">
       <section className="hero">
         <div className="badge">MBA Demo Mode</div>
         <h1>👽 VibeTwist PRO</h1>
         <p>
-          Upload your face, choose an alien avatar, pick a song, select a dance
-          style, choose a comedy ending, and generate a viral alien performance.
+          Upload a solo or group photo, choose alien bodies, enter a dance area,
+          pick music, and generate a club-style alien performance.
         </p>
       </section>
 
       <section className="card">
-        <h2>Create Your Alien</h2>
+        <h2>Create Your Alien Performance</h2>
 
         <div className="controls">
           <input type="file" accept="image/*" onChange={upload} />
+
+          <select value={mode} onChange={(e) => setMode(e.target.value)}>
+            <option>Solo Mode</option>
+            <option>Group Club Mode</option>
+          </select>
+
+          {mode === "Group Club Mode" && (
+            <select
+              value={dancerCount}
+              onChange={(e) => setDancerCount(Number(e.target.value))}
+            >
+              <option value={3}>3 Alien Dancers</option>
+              <option value={5}>5 Alien Dancers</option>
+              <option value={8}>8 Alien Dancers</option>
+              <option value={10}>10 Alien Dancers</option>
+            </select>
+          )}
 
           <select value={avatar} onChange={(e) => setAvatar(e.target.value)}>
             <option value="green">Green Alien DJ</option>
             <option value="blue">Blue Space Queen</option>
             <option value="robot">Robot Cyborg</option>
             <option value="gold">Gold VIP Alien</option>
+          </select>
+
+          <select value={scene} onChange={(e) => setScene(e.target.value)}>
+            <option>Haunted House</option>
+            <option>Alpha Tower</option>
+            <option>Pyramids</option>
+            <option>Funky Doorway</option>
+            <option>Alien Club</option>
           </select>
 
           <select value={dance} onChange={(e) => setDance(e.target.value)}>
@@ -132,13 +175,6 @@ export default function VibeTwistPro() {
             <option>Absurd</option>
           </select>
 
-          <select value={scene} onChange={(e) => setScene(e.target.value)}>
-            <option>Space Disco</option>
-            <option>Alien Nightclub</option>
-            <option>Moon Party</option>
-            <option>Retro Karaoke Stage</option>
-          </select>
-
           <select
             value={performanceStyle}
             onChange={(e) => setPerformanceStyle(e.target.value)}
@@ -150,10 +186,7 @@ export default function VibeTwistPro() {
             <option>Overdramatic Space Idol</option>
           </select>
 
-          <select
-            value={endingGag}
-            onChange={(e) => setEndingGag(e.target.value)}
-          >
+          <select value={endingGag} onChange={(e) => setEndingGag(e.target.value)}>
             <option>Disco Ball Crash</option>
             <option>Spotlight Fails</option>
             <option>Alien Trips</option>
@@ -189,17 +222,23 @@ export default function VibeTwistPro() {
       </section>
 
       <section className="preview-card">
-        <h2>Live Preview</h2>
+        <h2>Dance Area Preview</h2>
 
         <motion.div
-          className="alien-stage"
+          className={`alien-stage ${currentScene.background}`}
           animate={{
-            rotate: isPlaying ? [0, 5, -5, 0] : [0, 3, -3, 0],
-            y: isPlaying ? [0, -12, 0] : [0, -8, 0],
-            scale: isPlaying ? [1, 1.05, 1] : [1, 1.02, 1]
+            rotate: isPlaying ? [0, 4, -4, 0] : [0, 2, -2, 0],
+            y: isPlaying ? [0, -10, 0] : [0, -5, 0],
+            scale: isPlaying ? [1, 1.04, 1] : [1, 1.01, 1]
           }}
-          transition={{ repeat: Infinity, duration: isPlaying ? 1 : 1.4 }}
+          transition={{ repeat: Infinity, duration: isPlaying ? 1 : 1.5 }}
         >
+          <div className="environment-label">
+            {currentScene.icon} {scene}
+          </div>
+
+          <div className="entry-door">{currentScene.doorway}</div>
+
           <div
             className="disco"
             style={{
@@ -211,23 +250,73 @@ export default function VibeTwistPro() {
             🪩
           </div>
 
-          <div className="alien-body">
-            <div className="alien-head">
-              {photo ? (
-                <img src={photo} alt="Uploaded face" className="face-photo" />
-              ) : (
-                <span>{aliens[avatar]}</span>
-              )}
-            </div>
+          {mode === "Solo Mode" ? (
+            <motion.div
+              className="full-alien"
+              animate={{
+                x: isPlaying ? [0, -12, 12, 0] : [0, -5, 5, 0],
+                rotate: isPlaying ? [0, -6, 6, 0] : [0, -2, 2, 0]
+              }}
+              transition={{ repeat: Infinity, duration: isPlaying ? 0.8 : 1.4 }}
+            >
+              <div className="alien-head">
+                {photo ? (
+                  <img src={photo} alt="Uploaded face" className="face-photo" />
+                ) : (
+                  <span>{currentAlien.head}</span>
+                )}
+              </div>
 
-            <div className="alien-torso">{aliens[avatar]}</div>
-            <div className="alien-legs">🕺</div>
-          </div>
+              <div className={`alien-suit ${avatar}`}>
+                <div className="alien-arms">╲┃╱</div>
+                <div className="alien-body-core">{currentAlien.body}</div>
+                <div className="alien-feet">╱ ╲</div>
+              </div>
+            </motion.div>
+          ) : (
+            <div className="group-club">
+              {photo && (
+                <div className="group-photo-screen">
+                  <img src={photo} alt="Uploaded group" />
+                  <span>Face Source</span>
+                </div>
+              )}
+
+              <div className="club-dancers">
+                {groupDancers.map((dancer, index) => (
+                  <motion.div
+                    key={index}
+                    className={`mini-alien dancer-${index}`}
+                    animate={{
+                      y: isPlaying ? [0, -15, 0] : [0, -6, 0],
+                      rotate: isPlaying ? [0, -8, 8, 0] : [0, -3, 3, 0]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 0.7 + index * 0.05,
+                      delay: index * 0.08
+                    }}
+                  >
+                    <div className="mini-head">
+                      {photo ? (
+                        <img src={photo} alt="Group face source" />
+                      ) : (
+                        <span>{dancer.head}</span>
+                      )}
+                    </div>
+                    <div className="mini-body">{dancer.body}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
         </motion.div>
 
         <p className="caption">
-          {aliens[avatar]} performing <strong>{dance}</strong> to{" "}
-          <strong>{song}</strong> in <strong>{scene}</strong> with{" "}
+          {mode === "Solo Mode"
+            ? `${currentAlien.name} performing ${dance} to ${song}`
+            : `${dancerCount} alien dancers performing ${dance} to ${song}`}{" "}
+          inside <strong>{scene}</strong> with{" "}
           <strong>{performanceStyle}</strong> and ending:{" "}
           <strong>{endingGag}</strong>
         </p>
@@ -238,8 +327,8 @@ export default function VibeTwistPro() {
 
         {isGenerating && (
           <div className="ai-thinking">
-            🧠 Scanning face... syncing beat... selecting alien moves... choosing
-            gag ending...
+            🧠 Opening {scene} portal... assigning alien bodies... syncing beat...
+            selecting club choreography... choosing gag ending...
           </div>
         )}
 
@@ -249,21 +338,25 @@ export default function VibeTwistPro() {
 
             <div className="result-grid">
               <div>
-                <span>🪩</span>
-                <strong>Classic Disco Crash</strong>
-                <p>{endingGag} ending inspired by old-school alien comedy.</p>
+                <span>{currentScene.icon}</span>
+                <strong>Environment Cut</strong>
+                <p>
+                  {mode === "Solo Mode"
+                    ? `Full-body alien dancing inside ${scene}.`
+                    : `${dancerCount} alien dancers clubbing inside ${scene}.`}
+                </p>
               </div>
 
               <div>
-                <span>🎤</span>
-                <strong>Diva Performance</strong>
-                <p>{performanceStyle} with dramatic dance moves.</p>
+                <span>🪩</span>
+                <strong>Disco Crash Cut</strong>
+                <p>{endingGag} ending inspired by old-school alien comedy.</p>
               </div>
 
               <div>
                 <span>🤪</span>
                 <strong>Chaos Cut</strong>
-                <p>Absurd remix with {funLevel} comedy level.</p>
+                <p>{funLevel} comedy remix with dramatic alien energy.</p>
               </div>
             </div>
           </div>
@@ -271,9 +364,9 @@ export default function VibeTwistPro() {
       </section>
 
       <section className="features">
-        <div>📱 TikTok Share Mode</div>
-        <div>💃 Premium Dance Packs</div>
-        <div>🎬 HD Export</div>
+        <div>🌍 Select Dance Area</div>
+        <div>👽 Solo or Group Mode</div>
+        <div>🎬 Viral Performance Cut</div>
       </section>
 
       <audio
