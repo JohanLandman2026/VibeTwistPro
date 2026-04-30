@@ -93,7 +93,7 @@ button {
   top: 35px;
   right: 44%;
   font-size: 56px;
-  z-index: 6;
+  z-index: 8;
   filter: drop-shadow(0 0 16px white);
 }
 
@@ -113,9 +113,10 @@ button {
 }
 
 .face-photo {
-  width: 100%;
-  height: 100%;
+  width: 145%;
+  height: 145%;
   object-fit: cover;
+  object-position: center 35%;
 }
 
 .caption {
@@ -203,46 +204,53 @@ button {
   background: rgba(0, 0, 0, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.25);
   font-weight: bold;
-  z-index: 7;
+  z-index: 9;
 }
 
 .scene-entrance {
   position: absolute;
-  left: 32px;
-  top: 95px;
-  width: 220px;
-  height: 300px;
+  left: 50%;
+  top: 70px;
+  transform: translateX(-50%);
+  width: 230px;
+  height: 150px;
   border-radius: 28px;
   background:
-    radial-gradient(circle at center, rgba(0, 255, 240, 0.24), transparent 55%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.65));
-  border: 2px solid rgba(0, 255, 240, 0.45);
-  box-shadow: 0 0 35px rgba(0, 255, 240, 0.35);
+    radial-gradient(circle at center, rgba(0, 255, 240, 0.28), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.72));
+  border: 2px solid rgba(0, 255, 240, 0.5);
+  box-shadow: 0 0 45px rgba(0, 255, 240, 0.45);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 }
 
 .solo-entrance {
-  left: -270px;
-  top: 0;
+  left: 50%;
+  top: -120px;
+  transform: translateX(-50%);
 }
 
 .building {
-  font-size: 80px;
+  font-size: 48px;
+  margin-right: 10px;
 }
 
 .door-glow {
   font-size: 58px;
-  filter: drop-shadow(0 0 18px #00fff0);
+  filter: drop-shadow(0 0 22px #00fff0);
   animation: portalPulse 1.6s infinite ease-in-out;
 }
 
 .entrance-label {
+  position: absolute;
+  bottom: -34px;
   font-weight: 800;
-  margin-top: 12px;
   color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 8px 14px;
+  border-radius: 999px;
 }
 
 .solo-performance {
@@ -255,7 +263,7 @@ button {
 .full-alien {
   position: relative;
   z-index: 5;
-  margin-top: 110px;
+  margin-top: 170px;
   text-align: center;
 }
 
@@ -303,10 +311,11 @@ button {
 
 .club-floor {
   position: absolute;
-  left: 290px;
-  right: 36px;
-  bottom: 34px;
-  height: 275px;
+  left: 50%;
+  bottom: 35px;
+  transform: translateX(-50%);
+  width: 78%;
+  height: 260px;
   border-radius: 50% 50% 18px 18px;
   background:
     radial-gradient(ellipse at center, rgba(255, 0, 204, 0.28), transparent 70%),
@@ -315,8 +324,9 @@ button {
   grid-template-columns: repeat(5, 1fr);
   align-items: flex-end;
   justify-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 20px;
+  z-index: 4;
 }
 
 .mini-alien {
@@ -326,23 +336,25 @@ button {
 }
 
 .mini-head {
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   margin: auto;
   border-radius: 50%;
   background: #b6ff00;
-  border: 3px solid #00fff0;
+  border: 4px solid #00fff0;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
+  box-shadow: 0 0 20px rgba(0, 255, 240, 0.8);
 }
 
 .mini-head img {
-  width: 100%;
-  height: 100%;
+  width: 145%;
+  height: 145%;
   object-fit: cover;
+  object-position: center 35%;
 }
 
 .mini-body {
@@ -361,7 +373,7 @@ button {
   padding: 10px 12px;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  z-index: 7;
+  z-index: 9;
 }
 
 .results {
