@@ -24,11 +24,11 @@ export default function VibeTwistPro() {
     { name: "Boss Alien", image: "/aliens/alien4.png.jpg" }
   ];
 
-  const gifs = {
-    "Hip Hop": "/gifs/dance1.gif",
-    Shuffle: "/gifs/dance3.gif",
-    Breakdance: "/gifs/dance1.gif",
-    Disco: "/gifs/dance3.gif"
+  const demoResults = {
+    "Alien Club": "/gifs/dance1.gif",
+    "Haunted House": "/gifs/dance3.gif",
+    Pyramids: "/gifs/dance1.gif",
+    "Funky Doorway": "/gifs/dance3.gif"
   };
 
   const tracks = {
@@ -75,12 +75,13 @@ export default function VibeTwistPro() {
 
   function generate() {
     setGenerated(false);
+    setShowExport(false);
     setIsGenerating(true);
 
     setTimeout(() => {
       setIsGenerating(false);
       setGenerated(true);
-    }, 2500);
+    }, 2800);
   }
 
   const selectedAlien =
@@ -93,11 +94,11 @@ export default function VibeTwistPro() {
   return (
     <main className="app">
       <section className="hero">
-        <div className="badge">MBA DEMO MODE</div>
+        <div className="badge">MBA PREMIUM DEMO</div>
         <h1>👽 VibeTwist PRO</h1>
         <p>
-          Upload a face or group photo, choose an alien style, enter a scene,
-          and generate a viral dancing alien performance.
+          Upload a face, select an alien persona, choose a scene and music, then
+          generate a premium viral alien dance preview.
         </p>
       </section>
 
@@ -195,49 +196,59 @@ export default function VibeTwistPro() {
           </div>
 
           <div className={`waveform ${isPlaying ? "active" : ""}`}>
-            <span></span><span></span><span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
           </div>
         </div>
       </section>
 
       <section className="preview-card">
-        <h2>AI Scene Preview</h2>
+        <h2>{generated ? "Premium Generated Result" : "AI Scene Preview"}</h2>
 
         <div
-          className={`scene-stage ${generated ? "generated" : ""}`}
+          className={`scene-stage ${generated ? "premium-result" : ""}`}
           style={{ backgroundImage: `url(${scenes[scene]})` }}
         >
           <div className="scene-dark"></div>
 
+          <div className="scene-chip">{scene}</div>
+
           <motion.div
             className="club-door"
-            initial={false}
-            animate={generated ? { scale: [1, 1.15, 1], opacity: [0.9, 1, 0.9] } : {}}
-            transition={{ repeat: generated ? Infinity : 0, duration: 1.6 }}
+            animate={
+              generated
+                ? { scale: [1, 1.12, 1], opacity: [0.9, 1, 0.9] }
+                : { scale: [1, 1.03, 1] }
+            }
+            transition={{ repeat: Infinity, duration: 1.8 }}
           >
-            <span>Entering {scene}</span>
+            <span>{generated ? "Premium AI Render Complete" : `Entering ${scene}`}</span>
           </motion.div>
 
-          <div className="scene-chip">{scene}</div>
           <div className="disco-ball">🪩</div>
 
-          {mode === "Solo Mode" ? (
+          {!generated && mode === "Solo Mode" && (
             <motion.div
               className="solo-dancer"
-              animate={{ y: isPlaying || generated ? [0, -16, 0] : [0, -4, 0] }}
+              animate={{ y: isPlaying ? [0, -16, 0] : [0, -5, 0] }}
               transition={{ repeat: Infinity, duration: 0.9 }}
             >
               <AlienCharacter alien={selectedAlien} photo={photo} large />
             </motion.div>
-          ) : (
+          )}
+
+          {!generated && mode === "Group Club Mode" && (
             <div className="group-floor">
               {dancers.map((alien, index) => (
                 <motion.div
                   key={index}
                   className="group-dancer"
                   animate={{
-                    y: isPlaying || generated ? [0, -14, 0] : [0, -4, 0],
-                    rotate: isPlaying || generated ? [0, -5, 5, 0] : [0, -2, 2, 0]
+                    y: isPlaying ? [0, -14, 0] : [0, -4, 0],
+                    rotate: isPlaying ? [0, -5, 5, 0] : [0, -2, 2, 0]
                   }}
                   transition={{
                     repeat: Infinity,
@@ -252,12 +263,34 @@ export default function VibeTwistPro() {
           )}
 
           {generated && (
-            <img src={gifs[dance]} className="dance-gif-overlay" />
+            <div className="premium-output">
+              <img
+                src={demoResults[scene]}
+                className="premium-gif"
+                alt="Premium alien dance result"
+              />
+
+              <div className="result-info">
+                <h3>✨ Premium Demo Output</h3>
+                <p>
+                  This represents the final AI-rendered dance clip. In production,
+                  this would use face detection and video generation to blend the
+                  uploaded user photo into the alien dancer.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {photo && (
+            <div className="face-source-card">
+              <img src={photo} alt="Uploaded face source" />
+              <span>Uploaded face source</span>
+            </div>
           )}
 
           <div className="ai-note">
-            Demo AI: face-source mapping, scene selection, dancing GIF preview.
-            Production version would use face detection and AI video generation.
+            Demo mode: live preview + pre-generated premium result. Production
+            would use AI face detection and video generation.
           </div>
         </div>
 
@@ -271,7 +304,7 @@ export default function VibeTwistPro() {
 
         <div className="action-row">
           <button className="generate" onClick={generate}>
-            {isGenerating ? "Generating AI Performance..." : "Generate Dancing GIF"}
+            {isGenerating ? "Generating Premium AI Result..." : "Generate Dancing GIF"}
           </button>
 
           <button className="export" onClick={() => setShowExport(true)}>
@@ -281,15 +314,15 @@ export default function VibeTwistPro() {
 
         {isGenerating && (
           <div className="ai-thinking">
-            🧠 Detecting faces... assigning alien bodies... opening club portal...
-            syncing dance to beat...
+            🧠 Detecting face source... assigning alien body... opening selected
+            scene... syncing dance to beat... rendering premium demo output...
           </div>
         )}
 
         {showExport && (
           <div className="export-card">
             <h3>📱 TikTok Export Ready</h3>
-            <p>Demo export package created: vertical video, caption, hashtags.</p>
+            <p>Vertical video package created with caption and hashtags.</p>
             <p>#VibeTwist #AlienDance #MBAStartup</p>
             <button onClick={() => setShowExport(false)}>Close</button>
           </div>
@@ -297,8 +330,8 @@ export default function VibeTwistPro() {
       </section>
 
       <section className="features">
-        <div>🧠 AI Face Detection Demo</div>
-        <div>🎬 Dancing Video Preview</div>
+        <div>🧠 AI Face Detection Roadmap</div>
+        <div>🎬 Premium Demo Result</div>
         <div>📱 TikTok Export Flow</div>
       </section>
 
