@@ -22,20 +22,50 @@ export default function VibeTwistPro() {
   const audioRef = useRef(null);
 
   const aliens = {
-    green: { head: "👽", body: "🕺", name: "Green Alien DJ" },
-    blue: { head: "🛸", body: "💃", name: "Blue Space Queen" },
-    robot: { head: "🤖", body: "🕺", name: "Robot Cyborg" },
-    gold: { head: "👑", body: "🕺", name: "Gold VIP Alien" }
+    green: { emoji: "👽", name: "Green Alien DJ", className: "green" },
+    blue: { emoji: "🛸", name: "Blue Space Queen", className: "blue" },
+    robot: { emoji: "🤖", name: "Robot Cyborg", className: "robot" },
+    gold: { emoji: "👑", name: "Gold VIP Alien", className: "gold" }
   };
 
   const avatarKeys = ["green", "blue", "robot", "gold"];
 
   const sceneData = {
-    "Haunted House": { icon: "🏚️", background: "haunted", doorway: "🚪👻" },
-    "Alpha Tower": { icon: "🗼", background: "tower", doorway: "🚪✨" },
-    Pyramids: { icon: "🏜️", background: "pyramids", doorway: "🚪🔺" },
-    "Funky Doorway": { icon: "🚪", background: "funky", doorway: "🌀🚪🌀" },
-    "Alien Club": { icon: "🪩", background: "club", doorway: "🚪🎧" }
+    "Haunted House": {
+      title: "Haunted House",
+      label: "Entering the Haunted House",
+      background:
+        "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=1400&q=80",
+      icon: "🏚️"
+    },
+    "Alpha Tower": {
+      title: "Alpha Tower",
+      label: "Entering Alpha Tower",
+      background:
+        "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1400&q=80",
+      icon: "🗼"
+    },
+    Pyramids: {
+      title: "Pyramids",
+      label: "Entering the Pyramid Club",
+      background:
+        "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1400&q=80",
+      icon: "🏜️"
+    },
+    "Funky Doorway": {
+      title: "Funky Doorway",
+      label: "Entering the Funk Portal",
+      background:
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1400&q=80",
+      icon: "🚪"
+    },
+    "Alien Club": {
+      title: "Alien Club",
+      label: "Entering the Alien Club",
+      background:
+        "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1400&q=80",
+      icon: "🪩"
+    }
   };
 
   const musicTracks = {
@@ -112,8 +142,8 @@ export default function VibeTwistPro() {
         <div className="badge">MBA Demo Mode</div>
         <h1>👽 VibeTwist PRO</h1>
         <p>
-          Upload a solo or group photo, choose alien bodies, enter a dance area,
-          pick music, and generate a club-style alien performance.
+          Upload a solo or group photo, choose alien bodies, enter a realistic
+          dance area, pick music, and generate a club-style alien performance.
         </p>
       </section>
 
@@ -227,23 +257,31 @@ export default function VibeTwistPro() {
       </section>
 
       <section className="preview-card">
-        <h2>Dance Area Preview</h2>
+        <h2>AI Scene Preview</h2>
 
-        <motion.div
-          className={`alien-stage ${currentScene.background}`}
-          animate={{
-            rotate: isPlaying ? [0, 2, -2, 0] : [0, 1, -1, 0],
-            y: isPlaying ? [0, -6, 0] : [0, -3, 0],
-            scale: isPlaying ? [1, 1.02, 1] : [1, 1.005, 1]
-          }}
-          transition={{ repeat: Infinity, duration: isPlaying ? 1 : 1.8 }}
+        <div
+          className="real-scene-stage"
+          style={{ backgroundImage: `url(${currentScene.background})` }}
         >
-          <div className="environment-label">
-            {currentScene.icon} {scene}
+          <div className="scene-overlay"></div>
+
+          <div className="scene-title">
+            {currentScene.icon} {currentScene.title}
           </div>
 
+          <motion.div
+            className="portal-door"
+            animate={{
+              scale: isPlaying ? [1, 1.06, 1] : [1, 1.03, 1],
+              opacity: [0.9, 1, 0.9]
+            }}
+            transition={{ repeat: Infinity, duration: 1.8 }}
+          >
+            <span>{currentScene.label}</span>
+          </motion.div>
+
           <div
-            className="disco"
+            className="disco-real"
             style={{
               animation: isPlaying
                 ? "spin 1s linear infinite"
@@ -255,81 +293,43 @@ export default function VibeTwistPro() {
 
           {mode === "Solo Mode" ? (
             <motion.div
-              className="solo-performance"
+              className="solo-real-dancer"
               animate={{
-                x: isPlaying ? [0, -10, 10, 0] : [0, -4, 4, 0],
-                rotate: isPlaying ? [0, -4, 4, 0] : [0, -2, 2, 0]
+                y: isPlaying ? [0, -18, 0] : [0, -6, 0],
+                rotate: isPlaying ? [0, -6, 6, 0] : [0, -2, 2, 0]
               }}
-              transition={{ repeat: Infinity, duration: isPlaying ? 0.8 : 1.4 }}
+              transition={{ repeat: Infinity, duration: isPlaying ? 0.8 : 1.5 }}
             >
-              <div className="scene-entrance solo-entrance">
-                <div className="building">{currentScene.icon}</div>
-                <div className="door-glow">{currentScene.doorway}</div>
-                <div className="entrance-label">Entering {scene}</div>
-              </div>
-
-              <div className="full-alien">
-                <div className="alien-head">
-                  {photo ? (
-                    <img
-                      src={photo}
-                      alt="Uploaded face"
-                      className="face-photo"
-                    />
-                  ) : (
-                    <span>{currentAlien.head}</span>
-                  )}
-                </div>
-
-                <div className={`alien-suit ${avatar}`}>
-                  <div className="alien-arms">╲┃╱</div>
-                  <div className="alien-body-core">{currentAlien.body}</div>
-                  <div className="alien-feet">╱ ╲</div>
-                </div>
-              </div>
+              <AlienDancer alien={currentAlien} photo={photo} large />
             </motion.div>
           ) : (
-            <div className="group-club">
-              <div className="scene-entrance">
-                <div className="building">{currentScene.icon}</div>
-                <div className="door-glow">{currentScene.doorway}</div>
-                <div className="entrance-label">Entering {scene}</div>
-              </div>
-
-              <div className="club-floor">
-                {groupDancers.map((dancer, index) => (
-                  <motion.div
-                    key={index}
-                    className={`mini-alien dancer-${index}`}
-                    animate={{
-                      y: isPlaying ? [0, -16, 0] : [0, -6, 0],
-                      rotate: isPlaying ? [0, -8, 8, 0] : [0, -3, 3, 0]
-                    }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 0.7 + index * 0.05,
-                      delay: index * 0.08
-                    }}
-                  >
-                    <div className="mini-head">
-                      {photo ? (
-                        <img src={photo} alt="Face source" />
-                      ) : (
-                        <span>{dancer.head}</span>
-                      )}
-                    </div>
-                    <div className="mini-body">{dancer.body}</div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="demo-note">
-                Demo mode uses the uploaded image as a face source. A production
-                version would detect and crop each person’s face separately.
-              </div>
+            <div className="real-club-floor">
+              {groupDancers.map((dancer, index) => (
+                <motion.div
+                  key={index}
+                  className={`real-mini-dancer dancer-${index}`}
+                  animate={{
+                    y: isPlaying ? [0, -16, 0] : [0, -5, 0],
+                    rotate: isPlaying ? [0, -8, 8, 0] : [0, -2, 2, 0]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 0.7 + index * 0.04,
+                    delay: index * 0.08
+                  }}
+                >
+                  <AlienDancer alien={dancer} photo={photo} />
+                </motion.div>
+              ))}
             </div>
           )}
-        </motion.div>
+
+          <div className="production-note">
+            Demo mode uses realistic scene backgrounds and face-source mapping.
+            Production would use AI to detect each person’s face and generate
+            the full video scene.
+          </div>
+        </div>
 
         <p className="caption">
           {mode === "Solo Mode"
@@ -346,8 +346,8 @@ export default function VibeTwistPro() {
 
         {isGenerating && (
           <div className="ai-thinking">
-            🧠 Opening {scene} portal... assigning alien bodies... syncing
-            beat... selecting choreography... choosing gag ending...
+            🧠 Building {scene} environment... placing alien bodies... syncing
+            beat... creating performance preview...
           </div>
         )}
 
@@ -361,7 +361,7 @@ export default function VibeTwistPro() {
                 <strong>Environment Cut</strong>
                 <p>
                   {mode === "Solo Mode"
-                    ? `Full-body alien entering and dancing inside ${scene}.`
+                    ? `Full-body alien dancing inside ${scene}.`
                     : `${dancerCount} alien dancers clubbing inside ${scene}.`}
                 </p>
               </div>
@@ -383,7 +383,7 @@ export default function VibeTwistPro() {
       </section>
 
       <section className="features">
-        <div>🌍 Select Dance Area</div>
+        <div>🌍 Realistic Scene Backgrounds</div>
         <div>👽 Solo or Group Mode</div>
         <div>🎬 Viral Performance Cut</div>
       </section>
@@ -394,5 +394,25 @@ export default function VibeTwistPro() {
         onEnded={() => setIsPlaying(false)}
       />
     </main>
+  );
+}
+
+function AlienDancer({ alien, photo, large = false }) {
+  return (
+    <div className={large ? "alien-dancer large" : "alien-dancer"}>
+      <div className={`alien-body-card ${alien.className}`}>
+        <div className="alien-face-slot">
+          {photo ? (
+            <img src={photo} alt="Face source" />
+          ) : (
+            <span>{alien.emoji}</span>
+          )}
+        </div>
+
+        <div className="alien-chest">{alien.emoji}</div>
+        <div className="alien-arms-row">╲┃╱</div>
+        <div className="alien-legs-row">╱ ╲</div>
+      </div>
+    </div>
   );
 }
