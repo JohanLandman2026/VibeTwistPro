@@ -57,21 +57,28 @@ export default function VibeTwistPro() {
     reader.readAsDataURL(file);
   }
 
-  function toggleMusic() {
-    if (!audioRef.current) return;
+async function toggleMusic() {
+  if (!audioRef.current) return;
 
-    audioRef.current.volume = volume;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      setIsPlaying(false);
-    } else {
-      audioRef.current.src = tracks[song];
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
+  if (isPlaying) {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    setIsPlaying(false);
+    return;
   }
+
+  try {
+    audioRef.current.src = tracks[song];
+    audioRef.current.volume = Number(volume);
+    audioRef.current.load();
+
+    await audioRef.current.play();
+    setIsPlaying(true);
+  } catch (error) {
+    console.error("Music playback failed:", error);
+    alert("Music could not play. Please click Play Music Preview again.");
+  }
+}
 
   function generate() {
     setGenerated(false);
