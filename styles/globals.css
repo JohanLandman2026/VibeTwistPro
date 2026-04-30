@@ -177,7 +177,7 @@ button {
   top: 58px;
   left: 50%;
   transform: translateX(-50%);
-  width: 310px;
+  width: 330px;
   height: 160px;
   border-radius: 28px;
   z-index: 3;
@@ -279,22 +279,67 @@ button {
   object-position: center 35%;
 }
 
-.dance-gif-overlay {
+.face-source-card {
   position: absolute;
-  right: 26px;
-  bottom: 26px;
-  width: 170px;
-  border-radius: 22px;
+  left: 22px;
+  bottom: 22px;
   z-index: 9;
-  opacity: 0.82;
-  box-shadow: 0 0 30px rgba(255,0,204,0.75);
+  width: 150px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.65);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.face-source-card img {
+  width: 100%;
+  height: 95px;
+  object-fit: cover;
+}
+
+.face-source-card span {
+  display: block;
+  font-size: 12px;
+  padding: 8px;
+}
+
+.premium-output {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 52px;
+}
+
+.premium-gif {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 26px;
+  box-shadow: 0 0 45px rgba(255,0,204,0.75);
+  border: 2px solid rgba(255,255,255,0.25);
+}
+
+.result-info {
+  background: rgba(0,0,0,0.68);
+  padding: 24px;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.22);
+}
+
+.result-info h3 {
+  font-size: 28px;
+  margin-top: 0;
 }
 
 .ai-note {
   position: absolute;
   right: 22px;
   top: 22px;
-  z-index: 7;
+  z-index: 9;
   max-width: 330px;
   font-size: 12px;
   color: #e2e8f0;
@@ -367,12 +412,13 @@ button {
 @media (max-width: 800px) {
   .control-grid,
   .music-row,
-  .features {
+  .features,
+  .premium-output {
     grid-template-columns: 1fr;
   }
 
   .scene-stage {
-    height: 640px;
+    height: 680px;
   }
 
   .group-floor {
