@@ -45,13 +45,13 @@ export default function VibeTwistPro() {
         "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1400&q=80",
       icon: "🗼"
     },
-    Pyramids: {
-      title: "Pyramids",
-      label: "Entering the Pyramid Club",
-      background:
-        "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1400&q=80",
-      icon: "🏜️"
-    },
+Pyramids: {
+  title: "Pyramids",
+  label: "Entering the Pyramid Club",
+  background:
+    "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=1400&q=80",
+  icon: "🏜️"
+},
     "Funky Doorway": {
       title: "Funky Doorway",
       label: "Entering the Funk Portal",
