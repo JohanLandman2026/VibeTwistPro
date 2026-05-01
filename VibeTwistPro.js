@@ -347,6 +347,18 @@ async function toggleMusic() {
   );
 }
 
+<button
+  className="export"
+  onClick={() => {
+    setPhoto(null);
+    setGenerated(false);
+    setShowExport(false);
+    setIsGenerating(false);
+  }}
+>
+  Reset Demo
+</button>
+
 function AlienCharacter({ alien, photo, large = false }) {
   return (
     <div className={large ? "alien-character large" : "alien-character"}>
